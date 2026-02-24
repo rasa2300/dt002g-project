@@ -1,6 +1,4 @@
-package com.dt002g.project;
-
-import javax.swing.SwingUtilities;
+package se.miun.dt002g.notes;
 
 /**
  * The main starting point for Project.

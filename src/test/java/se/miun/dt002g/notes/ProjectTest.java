@@ -1,4 +1,4 @@
-package com.dt002g.project;
+package se.miun.dt002g.notes;
 
 import org.junit.jupiter.api.Test;
 
