@@ -63,7 +63,7 @@ public class DatabaseModelTest {
             // Indicate to Java that jarLocation will always be defined below
             return;
         }
-        Path path = Paths.get(jarLocation + "/testdb_DatabaseModelTest.sqlite");
+        Path path = Paths.get(jarLocation, "testdb_DatabaseModelTest.sqlite");
 
         assertTrue(Files.exists(path), "Database file must exist after it has been created.");
     }

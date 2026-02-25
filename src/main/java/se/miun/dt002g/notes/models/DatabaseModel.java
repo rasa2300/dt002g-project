@@ -5,6 +5,7 @@ import se.miun.dt002g.notes.interfaces.DatabaseConnectionInterface;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -41,7 +42,7 @@ public class DatabaseModel implements DatabaseConnectionInterface {
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-        this.dbPath = jarLocation + "/" + dbFile;
+        this.dbPath = Paths.get(jarLocation, dbFile).toString();
     }
 
     /**
