@@ -1,13 +1,4 @@
-package se.miun.dt002g.notes.controllers;
-
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.util.HashMap;
-import java.util.List;
+package se.miun.dt002g.notes.models;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,31 +6,56 @@ import org.junit.jupiter.api.Test;
 
 import se.miun.dt002g.notes.exceptions.NoteNotFoundException;
 import se.miun.dt002g.notes.interfaces.NoteInterface;
-import se.miun.dt002g.notes.models.Note;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Test cases for the DatabaseController class
+ * Test cases for the NoteDatabaseModel class.
  * @author rasa2300
  */
-public class DatabaseControllerTest {
-    private DatabaseController dbController;
+public class NoteDatabaseModelTest {
+    private static DatabaseModel dbModel;
+    private static NoteDatabaseModel noteDbModel;
     private static HashMap<String, String> map;
 
-    /**
-     * Initial setup before running subsequent tests.
-     */
-    @BeforeEach
-    public void setUp() {
-        this.dbController = new DatabaseController("testdb_DatabaseModelTest.sqlite");
+    private static Note mapResultSetToNote(ResultSet resultSet) {
+        assertNotNull(resultSet, "Result set should not be null");
+
+        try {
+            map = new HashMap<>();
+            map.put("title", resultSet.getString("title"));
+            map.put("content", resultSet.getString("content"));
+            map.put("creationTime", resultSet.getString("creationTime"));
+            map.put("modificationTime", resultSet.getString("modificationTime"));
+
+            return new Note(map);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
-     * Destroy the database after each test.
+     * Initial setup before running each test.
+     */
+    @BeforeEach
+    public void setUp() {
+        dbModel = new DatabaseModel("testdb_NoteDatabaseModelTest.sqlite");
+        noteDbModel = new NoteDatabaseModel(dbModel.getConnection());
+    }
+
+    /**
+     * Destroy the database after each tests have run such that it is clean
+     * for the next run.
      */
     @AfterEach
     public void tearDown() {
-        this.dbController.close();
-        this.dbController.destroy();
+        dbModel.close();
+        dbModel.destroy();
     }
 
     /**
@@ -51,7 +67,7 @@ public class DatabaseControllerTest {
         map.put("title", "title");
         map.put("content", "content");
 
-        assertNotEquals(-1, dbController.createNote(new Note(map)), "Inserted row ID should not be -1");
+        assertNotEquals(-1, noteDbModel.createNote(new Note(map)), "Inserted row ID should not be -1");
     }
 
     /**
@@ -64,12 +80,12 @@ public class DatabaseControllerTest {
         map.put("content", "content");
 
         var note = new Note(map);
-        var id = dbController.createNote(note);
+        var id = noteDbModel.createNote(note);
 
         map.replace("title", "title2");
         note.updateNote(map);
 
-        assertDoesNotThrow(() -> dbController.updateNote(id, note), "ID should exist");
+        assertDoesNotThrow(() -> noteDbModel.updateNote(id, note), "Note ID should exist");
     }
 
     /**
@@ -86,7 +102,7 @@ public class DatabaseControllerTest {
 
         assertThrows(
             NoteNotFoundException.class,
-            () -> dbController.updateNote(100000000, note),
+            () -> noteDbModel.updateNote(100000000, note),
             "Note ID should not exist");
     }
 
@@ -98,7 +114,7 @@ public class DatabaseControllerTest {
     public void shouldThrowExceptionWhenRetrievingNonexistentNote() {
         assertThrows(
             NoteNotFoundException.class,
-            () -> dbController.getNote(304985890),
+            () -> noteDbModel.getNote(304985890, null),
             "Note shouldn't exist");
     }
 
@@ -115,9 +131,9 @@ public class DatabaseControllerTest {
         map.put("modificationTime", "2026-02-01T00:00:01");
 
         var note = new Note(map);
-        var id = dbController.createNote(note);
+        var id = noteDbModel.createNote(note);
 
-        NoteInterface note2 = dbController.getNote(id);
+        NoteInterface note2 = noteDbModel.getNote(id, NoteDatabaseModelTest::mapResultSetToNote);
 
         assertAll(
             "Asserting retrieved note data from the database",
@@ -138,12 +154,12 @@ public class DatabaseControllerTest {
         map.put("content", "content");
 
         var note = new Note(map);
-        var id = dbController.createNote(note);
+        var id = noteDbModel.createNote(note);
 
         map.replace("title", "title2");
         note.updateNote(map);
 
-        assertDoesNotThrow(() -> dbController.deleteNote(id), "Note ID should exist");
+        assertDoesNotThrow(() -> noteDbModel.deleteNote(id), "Note ID should exist");
     }
 
     /**
@@ -152,7 +168,10 @@ public class DatabaseControllerTest {
      */
     @Test
     public void shouldThrowExceptionWhenDeletingNonexistentNote() {
-        assertThrows(NoteNotFoundException.class, () -> dbController.deleteNote(329847234), "Note shouldn't exist");
+        assertThrows(
+            NoteNotFoundException.class,
+            () -> noteDbModel.deleteNote(329847234),
+            "Note shouldn't exist");
     }
 
     /**
@@ -164,10 +183,10 @@ public class DatabaseControllerTest {
         map.put("title", "title");
         map.put("content", "content");
 
-        dbController.createNote(new Note(map));
-        dbController.createNote(new Note(map));
+        noteDbModel.createNote(new Note(map));
+        noteDbModel.createNote(new Note(map));
 
-        List<NoteInterface> notes = this.dbController.getNotes();
+        List<NoteInterface> notes = noteDbModel.getNotes(NoteDatabaseModelTest::mapResultSetToNote);
 
         assertEquals(2, notes.size(), "Should only contain 2 notes");
     }
