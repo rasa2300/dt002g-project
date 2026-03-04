@@ -22,6 +22,13 @@ public interface NoteControllerInterface {
     void setNoteView(NoteViewInterface noteView);
 
     /**
+     * Set the View instance that shows the buttons the user interacts with
+     * Called by the MainFrame
+     * @param buttonView is the interface of that class
+     */
+    void setButtonView(ButtonViewInterface buttonView);
+
+    /**
      * Create a new note.
      * Called by the ButtonPanel
      */

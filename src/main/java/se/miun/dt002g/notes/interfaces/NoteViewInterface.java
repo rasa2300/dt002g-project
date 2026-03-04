@@ -2,7 +2,7 @@ package se.miun.dt002g.notes.interfaces;
 
 import se.miun.dt002g.notes.models.Note;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * Interface of the NotePanel class.
@@ -23,7 +23,18 @@ public interface NoteViewInterface {
 
     /**
      * Get the information of a note displayed in the panel
-     * @return a map with a title key and a content value
+     * @return a list with a title key and a content value
      */
-    Map<String, String> getNoteContent();
+    List<String> getNoteContent();
+
+    /**
+     * Switch between the selected note bing editable or view only.
+     * @param isEditable is true if the note should be editable, otherwise false
+     */
+    void toggleEditable(boolean isEditable);
+
+    /**
+     * Display empty text fields for creating a new note
+     */
+    void initiateNewNote();
 }

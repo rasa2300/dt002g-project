@@ -28,9 +28,11 @@ public class MainFrame extends JFrame {
         NoteControllerInterface noteController = new NoteController();
         ButtonPanel buttonPanel = new ButtonPanel(noteController);
         ListPanel listPanel = new ListPanel(noteController);
-        NotePanel notePanel = new NotePanel(noteController);
+        NotePanel notePanel = new NotePanel();
+
         noteController.setNoteView(notePanel);
         noteController.setListView(listPanel);
+        noteController.setButtonView(buttonPanel);
 
         GridBagConstraints gbc = new GridBagConstraints();
 

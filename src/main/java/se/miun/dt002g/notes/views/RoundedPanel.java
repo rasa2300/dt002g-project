@@ -37,7 +37,7 @@ public class RoundedPanel extends JPanel {
 
         g2.dispose();
 
-        // Optional: paint child components
+        // Paint child components
         super.paintComponent(g);
     }
 
