@@ -23,6 +23,7 @@ public final class AppConfig {
     public static final int LIST_PANEL_WIDTH = 300;
     public static final int GRID_BAG_INSETS = 2;
     public static final int ROUNDED_CORNER_RADIUS = 40;
+    public static final Dimension LIST_NOTE_SIZE = new Dimension(Integer.MAX_VALUE, 50);
 
     /**
      * GUI colors
@@ -43,5 +44,8 @@ public final class AppConfig {
     public static final String EDIT_BUTTON_TEXT = "edit note";
     public static final String SAVE_BUTTON_TEXT = "save note";
     public static final String DELETE_BUTTON_TEXT = "delete note";
+    public static final String CONFIRM_DELETE = "Are you sure?";
+    public static final Font NOTE_TITLE_FONT = new Font("Arial", Font.BOLD, 18);
+    public static final Font NOTE_CONTENT_FONT = new Font("Arial", Font.PLAIN, 15);
 
 }

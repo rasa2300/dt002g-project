@@ -1,6 +1,7 @@
 package se.miun.dt002g.notes.views;
 
 import se.miun.dt002g.notes.config.AppConfig;
+import se.miun.dt002g.notes.interfaces.ButtonViewInterface;
 import se.miun.dt002g.notes.interfaces.NoteControllerInterface;
 
 import javax.swing.*;
@@ -10,9 +11,12 @@ import java.awt.*;
  * View class representing the panel holding buttons for the user to interact with the GUI
  * @author cabr2300
  */
-public class ButtonPanel extends RoundedPanel {
+public class ButtonPanel extends RoundedPanel implements ButtonViewInterface {
 
     NoteControllerInterface noteController;
+    JButton editButton;
+    JButton saveButton;
+    JButton deleteButton;
 
     /**
      * Class constructor setting up the structure and elements.
@@ -25,19 +29,65 @@ public class ButtonPanel extends RoundedPanel {
         this.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         JLabel notesLabel = new JLabel(AppConfig.ALL_NOTES);
         notesLabel.setFont(AppConfig.MENU_FONT);
-        JButton createButton = new CustomButton(AppConfig.NEW_BUTTON_TEXT);
-        createButton.addActionListener(e -> noteController.createNote());
-        JButton editButton = new CustomButton(AppConfig.EDIT_BUTTON_TEXT);
-        editButton.addActionListener(e -> noteController.editNote());
-        JButton saveButton = new CustomButton(AppConfig.SAVE_BUTTON_TEXT);
-        saveButton.addActionListener(e -> noteController.saveNote());
-        JButton deleteButton = new CustomButton(AppConfig.DELETE_BUTTON_TEXT);
-        deleteButton.addActionListener(e -> noteController.deleteNote());
+
+        JButton createButton = setUpButton(noteController::createNote, AppConfig.NEW_BUTTON_TEXT);
+        editButton = setUpButton(noteController::editNote, AppConfig.EDIT_BUTTON_TEXT);
+        saveButton = setUpButton(noteController::saveNote, AppConfig.SAVE_BUTTON_TEXT);
+        deleteButton = setUpButton(noteController::deleteNote, AppConfig.DELETE_BUTTON_TEXT);
+
         this.add(notesLabel);
         this.add(createButton);
         this.add(editButton);
         this.add(saveButton);
         this.add(deleteButton);
-        //TODO toggle visibility of the buttons depending on what actions are currently possible
+
+        noteSelected(false);
+    }
+
+    /**
+     * Create a button element and set up its action listener
+     * @param function is the function to call when button clicked
+     * @param buttonText is the text to display on  the button
+     * @return the button element.
+     */
+    private JButton setUpButton(Runnable function, String buttonText) {
+        JButton button = new CustomButton(buttonText);
+        button.addActionListener(e -> function.run());
+        return button;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void noteSelected(boolean isSelected) {
+        deleteButton.setVisible(isSelected);
+        if(!isSelected) {
+            editButton.setVisible(false);
+            saveButton.setVisible(false);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void editingNote(boolean isEditing) {
+        editButton.setVisible(!isEditing);
+        saveButton.setVisible(isEditing);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean showDeleteConfirmation() {
+        int result = JOptionPane.showConfirmDialog(
+                this,
+                AppConfig.DELETE_BUTTON_TEXT,
+                AppConfig.CONFIRM_DELETE,
+                JOptionPane.YES_NO_OPTION
+        );
+        return result == JOptionPane.YES_OPTION;
     }
 }
