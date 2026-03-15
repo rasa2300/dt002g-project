@@ -1,10 +1,12 @@
 package se.miun.dt002g.notes.interfaces;
 
+import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
 
 /**
  * Interface for retrieving note details.
  * @author rasa2300
+ * @author cabr2300
  */
 public interface NoteInterface {
 
@@ -37,5 +39,11 @@ public interface NoteInterface {
      * @return The modification time
      */
     LocalDateTime getModificationTime();
+
+    /**
+     * Gets the image attached to the note, if it exists.
+     * @return a BufferedImage
+     */
+    BufferedImage getImage();
 
 }

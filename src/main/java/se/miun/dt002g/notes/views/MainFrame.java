@@ -4,8 +4,10 @@ import se.miun.dt002g.notes.config.AppConfig;
 import se.miun.dt002g.notes.controllers.NoteController;
 import se.miun.dt002g.notes.interfaces.NoteControllerInterface;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 /**
  * Class representing the main application window.
