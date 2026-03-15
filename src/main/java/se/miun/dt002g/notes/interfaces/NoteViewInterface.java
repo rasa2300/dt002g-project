@@ -2,8 +2,6 @@ package se.miun.dt002g.notes.interfaces;
 
 import se.miun.dt002g.notes.models.Note;
 
-import java.util.List;
-
 /**
  * Interface of the NotePanel class.
  * @author cabr2300
@@ -22,10 +20,10 @@ public interface NoteViewInterface {
     void clearNote();
 
     /**
-     * Get the information of a note displayed in the panel
-     * @return a list with a title key and a content value
+     * Get a note containing the info displayed in the panel
+     * @return a Note object
      */
-    List<String> getNoteContent();
+    Note getNote();
 
     /**
      * Switch between the selected note bing editable or view only.
