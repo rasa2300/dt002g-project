@@ -2,6 +2,7 @@ package se.miun.dt002g.notes.models;
 
 import se.miun.dt002g.notes.interfaces.NoteInterface;
 
+import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.HashMap;
 /**
  * Model class representing a note and implementing the NoteInterface for retrieving note details.
  * @author rasa2300
+ * @author cabr2300
  */
 public class Note implements NoteInterface {
     private long id;
@@ -16,6 +18,7 @@ public class Note implements NoteInterface {
     private String content;
     private LocalDateTime creationTime;
     private LocalDateTime modificationTime;
+    private BufferedImage image;
 
     /**
      * Constructs a new Note object using provided data.
@@ -152,5 +155,21 @@ public class Note implements NoteInterface {
                 throw new IllegalArgumentException("Invalid modification time format");
             }
         }
+    }
+
+    /**
+     * Add an image to the note
+     * @param image is a BufferedImage object.
+     */
+    public void addImage(BufferedImage image) {
+        this.image = image;
+    }
+
+    /**
+     * Get the note image.
+     * @return a BufferedImage if exists, or null.
+     */
+    public BufferedImage getImage() {
+        return image;
     }
 }

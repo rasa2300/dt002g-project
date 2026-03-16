@@ -5,12 +5,20 @@ import se.miun.dt002g.notes.interfaces.ListViewInterface;
 import se.miun.dt002g.notes.interfaces.NoteControllerInterface;
 import se.miun.dt002g.notes.models.Note;
 
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JScrollPane;
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.BoxLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.*;
+
+import java.awt.Dimension;
+import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;

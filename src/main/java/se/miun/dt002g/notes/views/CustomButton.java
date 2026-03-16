@@ -2,7 +2,7 @@ package se.miun.dt002g.notes.views;
 
 import se.miun.dt002g.notes.config.AppConfig;
 
-import javax.swing.*;
+import javax.swing.JButton;
 
 /**
  * A custom button design.

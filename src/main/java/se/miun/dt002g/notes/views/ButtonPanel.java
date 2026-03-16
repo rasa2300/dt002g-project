@@ -4,8 +4,12 @@ import se.miun.dt002g.notes.config.AppConfig;
 import se.miun.dt002g.notes.interfaces.ButtonViewInterface;
 import se.miun.dt002g.notes.interfaces.NoteControllerInterface;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JOptionPane;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.BorderFactory;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 
 /**
  * View class representing the panel holding buttons for the user to interact with the GUI
@@ -31,9 +35,16 @@ public class ButtonPanel extends RoundedPanel implements ButtonViewInterface {
         notesLabel.setFont(AppConfig.MENU_FONT);
 
         JButton createButton = setUpButton(noteController::createNote, AppConfig.NEW_BUTTON_TEXT);
+        createButton.setToolTipText(AppConfig.NEW_NOTE_TOOLTIP);
+
         editButton = setUpButton(noteController::editNote, AppConfig.EDIT_BUTTON_TEXT);
+        editButton.setToolTipText(AppConfig.EDIT_NOTE_TOOLTIP);
+
         saveButton = setUpButton(noteController::saveNote, AppConfig.SAVE_BUTTON_TEXT);
+        saveButton.setToolTipText(AppConfig.SAVE_NOTE_TOOLTIP);
+
         deleteButton = setUpButton(noteController::deleteNote, AppConfig.DELETE_BUTTON_TEXT);
+        deleteButton.setToolTipText(AppConfig.DELETE_NOTE_TOOLTIP);
 
         this.add(notesLabel);
         this.add(createButton);

@@ -2,8 +2,12 @@ package se.miun.dt002g.notes.views;
 
 import se.miun.dt002g.notes.config.AppConfig;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Shape;
 
 /**
  * Custom JPanel design with rounded corners.

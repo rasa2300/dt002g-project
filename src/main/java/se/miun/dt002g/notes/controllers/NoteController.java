@@ -4,8 +4,7 @@ import se.miun.dt002g.notes.interfaces.ButtonViewInterface;
 import se.miun.dt002g.notes.interfaces.ListViewInterface;
 import se.miun.dt002g.notes.interfaces.NoteControllerInterface;
 import se.miun.dt002g.notes.interfaces.NoteViewInterface;
-
-import java.util.List;
+import se.miun.dt002g.notes.models.Note;
 
 /**
  * Controller class for note handling
@@ -85,7 +84,7 @@ public class NoteController implements NoteControllerInterface {
      */
     @Override
     public void saveNote() {
-        List<String> noteContent = noteView.getNoteContent();
+        Note note = noteView.getNote();
         noteView.toggleEditable(false);
         buttonView.editingNote(false);
 
