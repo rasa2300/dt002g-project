@@ -25,6 +25,8 @@ public final class AppConfig {
     public static final int ROUNDED_CORNER_RADIUS = 40;
     public static final Dimension LIST_NOTE_SIZE = new Dimension(Integer.MAX_VALUE, 50);
     public static final Dimension DROP_AREA_SIZE = new Dimension(Integer.MAX_VALUE, 50);
+    public static final Dimension NOTE_TITLE_SIZE = new Dimension(20, 20);
+    public static final int IMAGE_SIZE = 500;
 
     /**
      * GUI colors
@@ -49,6 +51,7 @@ public final class AppConfig {
     public static final String DROP_AREA_DONE = "image added";
     public static final String IMAGE_BUTTON_TEXT = "IMG";
     public static final String IMAGE_NAME_PLACEHOLDER = "Image";
+    public static final String DELETE_IMAGE = "delete image";
 
     /**
      * Tooltips
@@ -62,6 +65,7 @@ public final class AppConfig {
     public static final String SAVE_NOTE_TOOLTIP = "Save the current note";
     public static final String DELETE_NOTE_TOOLTIP = "Delete the displayed note";
     public static final String EDIT_NOTE_TOOLTIP = "Edit the currently displayed note";
+    public static final String DELETE_IMAGE_BUTTON_TOOLTIP = "Delete the current image attached to the note";
 
     /**
      * Fonts
@@ -69,5 +73,17 @@ public final class AppConfig {
     public static final Font NOTE_TITLE_FONT = new Font("Arial", Font.BOLD, 18);
     public static final Font NOTE_CONTENT_FONT = new Font("Arial", Font.PLAIN, 15);
     public static final Font MENU_FONT = new Font("Arial", Font.PLAIN, 20);
+
+    /**
+     * File and folder names
+     */
+    public static final String DB_FILE_NAME = "notes.db";
+    public static final String IMAGE_FOLDER_NAME = "images";
+
+    /**
+     * Error messages
+     */
+    public static final String TITLE_CANNOT_LOAD_NOTES = "ERROR LOADING NOTES";
+    public static final String CONTENT_CANNOT_LOAD_NOTES = "The saved notes could not be retrieved from the database. You may delete this placeholder.";
 
 }

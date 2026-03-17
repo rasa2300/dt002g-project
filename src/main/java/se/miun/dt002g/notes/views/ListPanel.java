@@ -3,7 +3,7 @@ package se.miun.dt002g.notes.views;
 import se.miun.dt002g.notes.config.AppConfig;
 import se.miun.dt002g.notes.interfaces.ListViewInterface;
 import se.miun.dt002g.notes.interfaces.NoteControllerInterface;
-import se.miun.dt002g.notes.models.Note;
+import se.miun.dt002g.notes.interfaces.NoteInterface;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -33,7 +33,7 @@ public class ListPanel extends RoundedPanel implements ListViewInterface {
     private final JPanel noteListPanel;
     private final NoteControllerInterface noteController;
     private JLabel selectedLabel;
-    private List<Note> allNotes;
+    private List<NoteInterface> allNotes;
 
     /**
      * Class constructor assigning the controller interface
@@ -82,9 +82,9 @@ public class ListPanel extends RoundedPanel implements ListViewInterface {
      *{@inheritDoc}
      */
     @Override
-    public void showNotes(List<Note> notes) {
+    public void showNotes(List<NoteInterface> notes) {
         allNotes = new ArrayList<>(notes);
-        allNotes.sort(Comparator.comparing(Note::getModificationTime));
+        allNotes.sort(Comparator.comparing(NoteInterface::getModificationTime).reversed());
         filterNotes(searchField.getText());
     }
 
@@ -94,7 +94,7 @@ public class ListPanel extends RoundedPanel implements ListViewInterface {
      * Adds the JLabel to the note list panel.
      * @param note is a Note object.
      */
-    private void addNoteToList(Note note) {
+    private void addNoteToList(NoteInterface note) {
         JLabel label = new JLabel(note.getTitle());
         label.setOpaque(true);
         label.setBorder(BorderFactory.createBevelBorder(1));

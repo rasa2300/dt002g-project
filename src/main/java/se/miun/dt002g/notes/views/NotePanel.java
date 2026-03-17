@@ -1,6 +1,7 @@
 package se.miun.dt002g.notes.views;
 
 import se.miun.dt002g.notes.config.AppConfig;
+import se.miun.dt002g.notes.interfaces.NoteInterface;
 import se.miun.dt002g.notes.interfaces.NoteViewInterface;
 import se.miun.dt002g.notes.models.Note;
 
@@ -17,7 +18,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JFrame;
 import javax.swing.ImageIcon;
 
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
@@ -34,6 +35,7 @@ public class NotePanel extends RoundedPanel implements NoteViewInterface {
     private BufferedImage image;
     private Note note;
     private final JButton displayButton;
+    private final JButton deleteImageButton;
 
     /**
      * Class constructor setting up the structure.
@@ -46,6 +48,7 @@ public class NotePanel extends RoundedPanel implements NoteViewInterface {
         titleField.setFont(AppConfig.NOTE_TITLE_FONT);
         titleField.setBackground(AppConfig.PANEL_COLOR);
         titleField.setToolTipText(AppConfig.TITLE_TOOLTIP);
+        titleField.setMaximumSize(AppConfig.NOTE_TITLE_SIZE);
 
         displayButton = setupDisplayButton();
 
@@ -53,10 +56,13 @@ public class NotePanel extends RoundedPanel implements NoteViewInterface {
         setUpDropArea(dropArea);
         dropArea.setToolTipText(AppConfig.DROP_AREA_TOOLTIP);
 
+        deleteImageButton = setupDeleteButton();
+
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.add(titleField, BorderLayout.NORTH);
         topPanel.add(dropArea, BorderLayout.CENTER);
         topPanel.add(displayButton, BorderLayout.WEST);
+        topPanel.add(deleteImageButton, BorderLayout.EAST);
 
         contentArea = new JTextArea("");
         contentArea.setFont(AppConfig.NOTE_CONTENT_FONT);
@@ -74,6 +80,7 @@ public class NotePanel extends RoundedPanel implements NoteViewInterface {
         this.add(scrollPane, BorderLayout.CENTER);
 
         toggleVisible(false);
+        toggleEditable(false);
     }
 
     /**
@@ -85,6 +92,7 @@ public class NotePanel extends RoundedPanel implements NoteViewInterface {
         this.image = note.getImage();
         titleField.setText(note.getTitle());
         contentArea.setText(note.getContent());
+        dropArea.setText(AppConfig.DROP_AREA_INITIAL);
         toggleEditable(false);
         toggleVisible(true);
     }
@@ -114,6 +122,7 @@ public class NotePanel extends RoundedPanel implements NoteViewInterface {
         } else {
             note.updateNote(data);
         }
+        note.addImage(image);
         return note;
     }
 
@@ -125,6 +134,7 @@ public class NotePanel extends RoundedPanel implements NoteViewInterface {
         titleField.setEditable(isEditable);
         contentArea.setEditable(isEditable);
         dropArea.setVisible(isEditable);
+        deleteImageButton.setVisible(isEditable && image != null);
         if (isEditable) {
             titleField.setBorder(UIManager.getBorder("TextField.border"));
             scrollPane.setBorder((UIManager.getBorder("ScrollPane.border")));
@@ -151,7 +161,7 @@ public class NotePanel extends RoundedPanel implements NoteViewInterface {
     private void toggleVisible(boolean isVisible) {
         titleField.setVisible(isVisible);
         scrollPane.setVisible(isVisible);
-        dropArea.setVisible(isVisible);
+        displayButton.setVisible(isVisible && image != null);
     }
 
     /**
@@ -168,11 +178,11 @@ public class NotePanel extends RoundedPanel implements NoteViewInterface {
         dropArea.setTransferHandler(new ImageDropHandler(image -> {
             this.image = image;
             dropArea.setText(AppConfig.DROP_AREA_PROCESSING);
-            System.out.println(this.image.toString());
-            Timer timer = new Timer(2000, e -> {
+            Timer timer = new Timer(1000, e -> {
                 dropArea.setText(AppConfig.DROP_AREA_DONE);
             });
             displayButton.setVisible(true);
+            deleteImageButton.setVisible(true);
             timer.setRepeats(false);  // fire once then stop
             timer.start();
         }));
@@ -211,5 +221,18 @@ public class NotePanel extends RoundedPanel implements NoteViewInterface {
         frame.pack();
         frame.setLocation(this.getX() + this.getWidth(), this.getY());
         frame.setVisible(true);
+    }
+
+    private JButton setupDeleteButton() {
+        JButton button = new CustomButton(AppConfig.DELETE_IMAGE);
+        button.setToolTipText(AppConfig.DELETE_IMAGE_BUTTON_TOOLTIP);
+        button.addActionListener(e -> {
+            this.image = null;
+            button.setVisible(false);
+            displayButton.setVisible(false);
+            dropArea.setText(AppConfig.DROP_AREA_INITIAL);
+        });
+        button.setVisible(false);
+        return button;
     }
 }

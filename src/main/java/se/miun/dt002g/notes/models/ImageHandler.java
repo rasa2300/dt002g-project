@@ -1,5 +1,7 @@
 package se.miun.dt002g.notes.models;
 
+import se.miun.dt002g.notes.config.AppConfig;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -29,7 +31,7 @@ public class ImageHandler {
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-        this.imageFolderPath = Paths.get(jarLocation, "images").toString();
+        this.imageFolderPath = Paths.get(jarLocation, AppConfig.IMAGE_FOLDER_NAME).toString();
         // create image folder if it doesn't exist already
         File imageFolder = new File(imageFolderPath);
         if (!imageFolder.exists()) {
@@ -47,14 +49,6 @@ public class ImageHandler {
     }
 
     /**
-     * Gets the path to the image folder.
-     * @return the path as a string.
-     */
-    private String getImageFolderPath() {
-        return imageFolderPath;
-    }
-
-    /**
      * Saves an image to the image folder.
      * @param image is a BufferedImage.
      * @param noteId is the unique id of the note that the image belongs to.
@@ -63,8 +57,10 @@ public class ImageHandler {
     public boolean saveImage(BufferedImage image, long noteId) {
         try {
             ImageIO.write(image, "jpg", new File(getImagePath(noteId)));
+            System.out.println("Successfully saved image: " + image);
             return true;
         } catch(IOException e) {
+            System.out.println("Could not save image: " + image);
             return false;
         }
     }
@@ -75,9 +71,13 @@ public class ImageHandler {
      * @return the image as a BufferedImage object.
      */
     public BufferedImage getImage(long noteId) {
+        System.out.println(noteId);
         try {
-            return ImageIO.read(new File(getImagePath(noteId)));
+            BufferedImage image =  ImageIO.read(new File(getImagePath(noteId)));
+            System.out.println("successfully loaded image: " + image.toString());
+            return image;
         } catch(IOException e) {
+            System.out.println("Could not load image");
             return null;
         }
     }

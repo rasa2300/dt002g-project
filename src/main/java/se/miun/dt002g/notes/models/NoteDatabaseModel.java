@@ -109,7 +109,7 @@ public class NoteDatabaseModel {
      * @throws NoteNotFoundException If note was not found.
      * @return A note object implementing the NoteInterface
      */
-    public NoteInterface getNote(long id, ResultSetCallback callback) {
+    public Note getNote(long id, ResultSetCallback callback) {
         String sql = """
                 SELECT id, title, content, creationTime, modificationTime
                 FROM notes WHERE id = ?
@@ -158,11 +158,11 @@ public class NoteDatabaseModel {
      */
     public interface ResultSetCallback {
         /**
-         * Process the result into a NoteInterface compatible object
+         * Process the result into a Note compatible object
          * @param resultSet Result set object from a database query
          * @return Note object implementing the NoteInterface
          */
-        NoteInterface process(ResultSet resultSet);
+        Note process(ResultSet resultSet);
     }
 
     /**

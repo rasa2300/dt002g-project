@@ -100,7 +100,7 @@ public class DatabaseController implements DatabaseConnectionInterface {
      * Helper to convert a ResultSet row into a NoteInterface, used for methods
      * that retrieve notes from the database and return them as Note objects.
      */
-    private NoteInterface noteFromResultSet(ResultSet resultSet) {
+    private Note noteFromResultSet(ResultSet resultSet) {
         try {
             var map = new HashMap<String, String>();
             map.put("id", String.valueOf(resultSet.getLong("id")));
@@ -121,7 +121,7 @@ public class DatabaseController implements DatabaseConnectionInterface {
      * @throws NoteNotFoundException If note was not found.
      * @return A note object implementing the NoteInterface
      */
-    public NoteInterface getNote(long id) {
+    public Note getNote(long id) {
         return noteDatabaseModel.getNote(id, this::noteFromResultSet);
     }
 
