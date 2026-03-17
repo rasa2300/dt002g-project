@@ -57,10 +57,8 @@ public class ImageHandler {
     public boolean saveImage(BufferedImage image, long noteId) {
         try {
             ImageIO.write(image, "jpg", new File(getImagePath(noteId)));
-            System.out.println("Successfully saved image: " + image);
             return true;
         } catch(IOException e) {
-            System.out.println("Could not save image: " + image);
             return false;
         }
     }
@@ -73,11 +71,8 @@ public class ImageHandler {
     public BufferedImage getImage(long noteId) {
         System.out.println(noteId);
         try {
-            BufferedImage image =  ImageIO.read(new File(getImagePath(noteId)));
-            System.out.println("successfully loaded image: " + image.toString());
-            return image;
+            return ImageIO.read(new File(getImagePath(noteId)));
         } catch(IOException e) {
-            System.out.println("Could not load image");
             return null;
         }
     }
