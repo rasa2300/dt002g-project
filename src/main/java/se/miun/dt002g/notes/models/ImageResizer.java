@@ -1,6 +1,7 @@
 package se.miun.dt002g.notes.models;
 
 import org.imgscalr.Scalr;
+import se.miun.dt002g.notes.config.AppConfig;
 
 import java.awt.image.BufferedImage;
 
@@ -17,7 +18,7 @@ public class ImageResizer {
      */
     public BufferedImage resizeImage(BufferedImage image) {
         int originalSize = Integer.max(image.getHeight(), image.getWidth());
-        int targetSize = 700;
+        int targetSize = AppConfig.IMAGE_SIZE;
         return targetSize < originalSize ? Scalr.resize(image, Scalr.Method.QUALITY, targetSize) : image;
     }
 }

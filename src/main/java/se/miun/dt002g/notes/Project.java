@@ -1,5 +1,9 @@
 package se.miun.dt002g.notes;
 
+import se.miun.dt002g.notes.views.MainFrame;
+
+import javax.swing.*;
+
 /**
  * The main starting point for Project.
  */
@@ -11,6 +15,6 @@ public final class Project {
      * @param args command arguments.
      */
     public static void main(final String... args) {
-        System.out.println("helo");
+        SwingUtilities.invokeLater(MainFrame::new);
     }
 }

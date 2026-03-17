@@ -73,10 +73,7 @@ public class ButtonPanel extends RoundedPanel implements ButtonViewInterface {
     @Override
     public void noteSelected(boolean isSelected) {
         deleteButton.setVisible(isSelected);
-        if(!isSelected) {
-            editButton.setVisible(false);
-            saveButton.setVisible(false);
-        }
+        editButton.setVisible(isSelected);
     }
 
     /**
