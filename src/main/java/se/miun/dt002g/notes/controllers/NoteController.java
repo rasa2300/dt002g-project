@@ -25,7 +25,7 @@ public class NoteController implements NoteControllerInterface {
     private ListViewInterface listView;
     private NoteViewInterface noteView;
     private ButtonViewInterface buttonView;
-    private ExecutorService executors;
+    private final ExecutorService executors;
     private DatabaseController database;
     private ImageHandler imageHandler;
     private ImageResizer resizer;
@@ -148,26 +148,31 @@ public class NoteController implements NoteControllerInterface {
         noteView.toggleEditable(false);
         buttonView.editingNote(false);
         executors.submit(() -> {
-            if(note.getImage() != null) {
-                BufferedImage image = resizer.resizeImage(note.getImage());
-                System.out.println(image);
-                System.out.println("Saving image in NoteController");
-                imageHandler.saveImage(image, note.getId());
-                System.out.println("done saving image");
-            } else {
-                imageHandler.deleteImage(note.getId());
-                System.out.println("No image attached to note");
-            }
-        });
-        executors.submit(() -> {
             try {
                 database.updateNote(note.getId(), note);
+                saveOrDeleteImage(note, note.getId());
             } catch (NoteNotFoundException e) {
-                database.createNote(note);
+                long id = database.createNote(note);
+                saveOrDeleteImage(note, id);
             }
             List<NoteInterface> notes = loadNotesOrFallback();
             SwingUtilities.invokeLater(() -> listView.showNotes(notes));
         });
+    }
+
+    /**
+     * Helper method to saveNote. Resizes and saves an image if attached to note.
+     * If the note has no image, attempts to delete any prior image associate with it.
+     * @param note is a Note object
+     * @param id is the unique id of a note
+     */
+    private void saveOrDeleteImage(Note note, long id) {
+        if(note.getImage() != null) {
+            BufferedImage image = resizer.resizeImage(note.getImage());
+            imageHandler.saveImage(image, id);
+        } else {
+            imageHandler.deleteImage(id);
+        }
     }
 
     /**
