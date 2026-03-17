@@ -22,7 +22,7 @@ In order to build and create a JAR out of the project, run the following command
 mvn package
 ```
 
-It will be available as a JAR in the `target/` repository and should be able to run (Note: We have not implemented the GUI yet!).
+It will be available as a JAR in the `target/` repository and should be able to run.
 
 In order to run the test suite, run the following command:
 
